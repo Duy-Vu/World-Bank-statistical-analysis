@@ -1,0 +1,615 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={analysis.R},
+  pdfauthor={zuiuz},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{analysis.R}
+\author{zuiuz}
+\date{2021-10-27}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\# Data processing \#\#\#\#}
+\FunctionTok{library}\NormalTok{(foreign)}
+\NormalTok{data\_dir }\OtherTok{\textless{}{-}} \StringTok{"../data/vaestotieto.sav"}
+\NormalTok{path }\OtherTok{\textless{}{-}} \FunctionTok{file.path}\NormalTok{(data\_dir)}
+\NormalTok{dataset }\OtherTok{\textless{}{-}} \FunctionTok{read.spss}\NormalTok{(path, }\AttributeTok{to.data.frame=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## re-encoding from CP1252
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Remove data of regions, or groups of country (Valtioiden muodostama alue)  }
+\NormalTok{dataset.analysis }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(dataset, V3 }\SpecialCharTok{!=} \StringTok{"Valtioiden muodostama alue"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(dataset.analysis)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       V1                 V2                                     V3     
+##  Length:216         Length:216         Itsenäinen valtio         :194  
+##  Class :character   Class :character   Valtioiden muodostama alue:  0  
+##  Mode  :character   Mode  :character   Muu alue/territorio       : 22  
+##                                                                        
+##                                                                        
+##                                                                        
+##                                                                        
+##        V4               V5                     V6         V7     
+##  Min.   :      10   Ei   :148   Matala          :34   Ei   :150  
+##  1st Qu.:   11610   Kyllä: 47   Alempi keskitaso:46   Kyllä: 44  
+##  Median :   96320   NA's : 21   Ylempi keskitaso:56   NA's : 22  
+##  Mean   :  609099               Korkea          :79              
+##  3rd Qu.:  446300               NA's            : 1              
+##  Max.   :16376870                                                
+##  NA's   :7                                                       
+##        V9                 V10                 V11              V12       
+##  Min.   :1.151e+04   Min.   :    0.136   Min.   : 13.03   Min.   : 6.70  
+##  1st Qu.:7.667e+05   1st Qu.:   37.463   1st Qu.: 42.06   1st Qu.:11.14  
+##  Median :6.679e+06   Median :   91.178   Median : 61.83   Median :17.56  
+##  Mean   :3.516e+07   Mean   :  359.367   Mean   : 60.83   Mean   :19.94  
+##  3rd Qu.:2.503e+07   3rd Qu.:  219.079   3rd Qu.: 80.44   3rd Qu.:27.22  
+##  Max.   :1.393e+09   Max.   :20777.500   Max.   :100.00   Max.   :46.54  
+##  NA's   :1           NA's   :8           NA's   :3        NA's   :12     
+##       V13              V14             V15              V16          
+##  Min.   : 1.169   Min.   : 1.60   Min.   : 17.52   Min.   : 0.01413  
+##  1st Qu.: 5.825   1st Qu.: 6.20   1st Qu.: 48.12   1st Qu.: 2.23888  
+##  Median : 7.236   Median :14.60   Median : 54.36   Median : 7.28794  
+##  Mean   : 7.625   Mean   :22.19   Mean   : 58.61   Mean   :17.83908  
+##  3rd Qu.: 9.116   3rd Qu.:33.60   3rd Qu.: 67.62   3rd Qu.:28.41373  
+##  Max.   :15.500   Max.   :85.90   Max.   :110.88   Max.   :74.26484  
+##  NA's   :12       NA's   :24      NA's   :24       NA's   :139       
+##       V17              V18                V19              V20        
+##  Min.   : 0.000   Min.   : 0.00711   Min.   : 0.110   Min.   :   293  
+##  1st Qu.: 1.533   1st Qu.: 2.13621   1st Qu.: 3.531   1st Qu.:  2211  
+##  Median : 4.798   Median : 5.61673   Median : 5.348   Median :  6331  
+##  Mean   :12.329   Mean   :15.10099   Mean   : 7.021   Mean   : 17219  
+##  3rd Qu.:16.699   3rd Qu.:23.42948   3rd Qu.: 9.215   3rd Qu.: 20700  
+##  Max.   :59.735   Max.   :65.47724   Max.   :26.920   Max.   :173356  
+##  NA's   :139      NA's   :139        NA's   :30       NA's   :14      
+##       V21             V22              V23              V24        
+##  Min.   :1.455   Min.   : 0.000   Min.   : 1.643   Min.   : 27.41  
+##  1st Qu.:3.355   1st Qu.: 0.957   1st Qu.: 4.528   1st Qu.: 89.76  
+##  Median :4.477   Median : 1.422   Median : 6.469   Median :112.70  
+##  Mean   :4.448   Mean   : 1.809   Mean   : 6.643   Mean   :111.03  
+##  3rd Qu.:5.414   3rd Qu.: 2.116   3rd Qu.: 8.181   3rd Qu.:132.09  
+##  Max.   :7.963   Max.   :10.224   Max.   :17.728   Max.   :345.32  
+##  NA's   :100     NA's   :65       NA's   :30       NA's   :35      
+##       V25             V26             V27             V28        
+##  Min.   :54.35   Min.   :49.84   Min.   :52.24   Min.   : 0.100  
+##  1st Qu.:69.31   1st Qu.:65.28   1st Qu.:67.30   1st Qu.: 0.200  
+##  Median :77.10   Median :70.91   Median :74.10   Median : 0.400  
+##  Mean   :75.01   Mean   :70.12   Mean   :72.53   Mean   : 2.093  
+##  3rd Qu.:80.76   3rd Qu.:75.99   3rd Qu.:78.07   3rd Qu.: 1.375  
+##  Max.   :87.60   Max.   :81.90   Max.   :84.68   Max.   :28.400  
+##  NA's   :18      NA's   :18      NA's   :18      NA's   :94      
+##       V29               V30              V6_1             V6_2      
+##  Min.   :     11   Min.   : 5.861   Min.   :0.0000   Min.   :0.000  
+##  1st Qu.:   1733   1st Qu.:13.404   1st Qu.:0.0000   1st Qu.:0.000  
+##  Median :   9787   Median :21.569   Median :0.0000   Median :0.000  
+##  Mean   : 161976   Mean   :27.051   Mean   :0.1581   Mean   :0.214  
+##  3rd Qu.:  53989   3rd Qu.:34.779   3rd Qu.:0.0000   3rd Qu.:0.000  
+##  Max.   :9893038   Max.   :99.734   Max.   :1.0000   Max.   :1.000  
+##  NA's   :13        NA's   :23       NA's   :1        NA's   :1      
+##       V6_3             V6_4                filter_.  
+##  Min.   :0.0000   Min.   :0.0000   Not Selected: 22  
+##  1st Qu.:0.0000   1st Qu.:0.0000   Selected    :194  
+##  Median :0.0000   Median :0.0000                     
+##  Mean   :0.2605   Mean   :0.3674                     
+##  3rd Qu.:1.0000   3rd Qu.:1.0000                     
+##  Max.   :1.0000   Max.   :1.0000                     
+##  NA's   :1        NA's   :1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Explanatory variables: }
+\CommentTok{\# 1. V20{-}GDP per capita, }
+\CommentTok{\# 2. V23 healthcare expense, }
+\NormalTok{gdp.per.capita }\OtherTok{\textless{}{-}}\NormalTok{ dataset.analysis}\SpecialCharTok{$}\NormalTok{V20}
+\NormalTok{healthcare.expense }\OtherTok{\textless{}{-}}\NormalTok{ dataset.analysis}\SpecialCharTok{$}\NormalTok{V23}
+
+\CommentTok{\# Dependent variables: }
+\CommentTok{\# 1. V27{-}life expectancy}
+\CommentTok{\# 2. V14 infant mortality}
+\CommentTok{\# 3. V13{-}mortality}
+\NormalTok{life.expectancy }\OtherTok{\textless{}{-}}\NormalTok{ dataset.analysis}\SpecialCharTok{$}\NormalTok{V27}
+\NormalTok{infant.mortality }\OtherTok{\textless{}{-}}\NormalTok{ dataset.analysis}\SpecialCharTok{$}\NormalTok{V14}
+\NormalTok{mortality }\OtherTok{\textless{}{-}}\NormalTok{ dataset.analysis}\SpecialCharTok{$}\NormalTok{V13}
+
+\CommentTok{\# Create new dataframe to analyse and remove rows with NA value}
+\NormalTok{countries }\OtherTok{\textless{}{-}}\NormalTok{ dataset.analysis}\SpecialCharTok{$}\NormalTok{V1}
+\NormalTok{dataset.analysis }\OtherTok{\textless{}{-}}\FunctionTok{na.omit}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(countries,}
+\NormalTok{                                      gdp.per.capita, }
+\NormalTok{                                      healthcare.expense,}
+\NormalTok{                                      life.expectancy,}
+\NormalTok{                                      infant.mortality,}
+\NormalTok{                                      mortality,}
+                                      \AttributeTok{stringsAsFactors=}\ConstantTok{FALSE}\NormalTok{))}
+\FunctionTok{row.names}\NormalTok{(dataset.analysis) }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\FunctionTok{write.csv}\NormalTok{(dataset.analysis, }\AttributeTok{file=}\StringTok{"../output/data/clean\_data.csv"}\NormalTok{, }\AttributeTok{row.names=}\ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(dataset.analysis)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   countries         gdp.per.capita   healthcare.expense life.expectancy
+##  Length:174         Min.   :   293   Min.   : 2.270     Min.   :52.24  
+##  Class :character   1st Qu.:  1862   1st Qu.: 4.466     1st Qu.:67.02  
+##  Mode  :character   Median :  5413   Median : 6.421     Median :73.75  
+##                     Mean   : 13570   Mean   : 6.510     Mean   :72.15  
+##                     3rd Qu.: 15826   3rd Qu.: 8.135     3rd Qu.:77.57  
+##                     Max.   :107627   Max.   :17.004     Max.   :84.10  
+##  infant.mortality   mortality     
+##  Min.   : 1.70    Min.   : 1.169  
+##  1st Qu.: 6.20    1st Qu.: 5.849  
+##  Median :14.40    Median : 7.236  
+##  Mean   :22.04    Mean   : 7.700  
+##  3rd Qu.:34.27    3rd Qu.: 9.200  
+##  Max.   :85.90    Max.   :15.500
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\# Exploratory data analysis \#\#\#\#}
+\CommentTok{\# Calculate correlation coefficients between all variables}
+\CommentTok{\# Get correlation matrix between 5 columns }
+\NormalTok{cor\_matrix }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(dataset.analysis[,}\DecValTok{2}\SpecialCharTok{:}\DecValTok{6}\NormalTok{])}
+
+\FunctionTok{library}\NormalTok{(corrplot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## corrplot 0.90 loaded
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{corrplot}\NormalTok{(cor\_matrix, }\AttributeTok{method=}\StringTok{"number"}\NormalTok{, }\AttributeTok{type=}\StringTok{"lower"}\NormalTok{, }\AttributeTok{order=}\StringTok{"hclust"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analysis_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{log}\NormalTok{(dataset.analysis}\SpecialCharTok{$}\NormalTok{gdp.per.capita}\SpecialCharTok{/}\DecValTok{1000}\NormalTok{),}
+\NormalTok{     dataset.analysis}\SpecialCharTok{$}\NormalTok{life.expectancy,}
+     \AttributeTok{main=}\StringTok{"gdp/capita vs life expectancy: 0.65"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analysis_files/figure-latex/unnamed-chunk-1-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Strong relationship between life expectancy and log of gdp/capita}
+\FunctionTok{cor}\NormalTok{(dataset.analysis}\SpecialCharTok{$}\NormalTok{life.expectancy, }
+\NormalTok{    dataset.analysis}\SpecialCharTok{$}\NormalTok{gdp.per.capita, }
+    \AttributeTok{method=}\StringTok{"spearman"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8631761
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(dataset.analysis}\SpecialCharTok{$}\NormalTok{gdp.per.capita}\SpecialCharTok{/}\DecValTok{1000}\NormalTok{,}
+\NormalTok{     dataset.analysis}\SpecialCharTok{$}\NormalTok{healthcare.expense,}
+     \AttributeTok{main=}\StringTok{"gdp/capita vs healthcare expense: 0.35"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analysis_files/figure-latex/unnamed-chunk-1-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Weak relationship}
+
+\CommentTok{\# Strongest negative linear relationship}
+\FunctionTok{plot}\NormalTok{(dataset.analysis}\SpecialCharTok{$}\NormalTok{infant.mortality,}
+\NormalTok{     dataset.analysis}\SpecialCharTok{$}\NormalTok{life.expectancy,}
+     \AttributeTok{main=}\StringTok{"infant mortality vs life expectancy: {-}0.93"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analysis_files/figure-latex/unnamed-chunk-1-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\# Sampling \#\#\#\#}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{35}
+\FunctionTok{set.seed}\NormalTok{(n)}
+\NormalTok{random\_id }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{174}\NormalTok{, n)}
+\NormalTok{dataset.sample }\OtherTok{\textless{}{-}}\NormalTok{ dataset.analysis[random\_id,]}
+\FunctionTok{write.csv}\NormalTok{(dataset.sample, }\AttributeTok{file=}\StringTok{"../output/data/sample\_data.csv"}\NormalTok{, }\AttributeTok{row.names=}\ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(dataset.sample)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   countries         gdp.per.capita  healthcare.expense life.expectancy
+##  Length:35          Min.   :  293   Min.   : 2.271     Min.   :58.06  
+##  Class :character   1st Qu.: 2212   1st Qu.: 5.248     1st Qu.:68.91  
+##  Mode  :character   Median : 4586   Median : 6.230     Median :72.64  
+##                     Mean   :11041   Mean   : 6.407     Mean   :72.33  
+##                     3rd Qu.: 9079   3rd Qu.: 7.388     3rd Qu.:75.95  
+##                     Max.   :75497   Max.   :11.711     Max.   :82.95  
+##  infant.mortality   mortality     
+##  Min.   : 2.00    Min.   : 1.169  
+##  1st Qu.: 7.00    1st Qu.: 6.085  
+##  Median :15.40    Median : 7.261  
+##  Mean   :21.58    Mean   : 7.516  
+##  3rd Qu.:31.95    3rd Qu.: 8.995  
+##  Max.   :64.30    Max.   :14.200
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X }\OtherTok{\textless{}{-}}\NormalTok{ dataset.sample}\SpecialCharTok{$}\NormalTok{infant.mortality}
+\NormalTok{Y }\OtherTok{\textless{}{-}}\NormalTok{ dataset.sample}\SpecialCharTok{$}\NormalTok{life.expectancy}
+\FunctionTok{plot}\NormalTok{(X, Y,}
+     \AttributeTok{xlab=}\StringTok{\textquotesingle{}Infant mortality (per 1,000 live births)\textquotesingle{}}\NormalTok{,}
+     \AttributeTok{ylab=}\StringTok{\textquotesingle{}Life expectancy\textquotesingle{}}\NormalTok{, }
+     \AttributeTok{pch =} \DecValTok{16}\NormalTok{, }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{)}
+
+
+\DocumentationTok{\#\#\#\# Fit linear line to the data \#\#\#\#}
+\CommentTok{\# Without R}
+\NormalTok{X\_1 }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{,X)}
+\NormalTok{BM}\OtherTok{\textless{}{-}}\FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(X\_1)}\SpecialCharTok{\%*\%}\NormalTok{X\_1)}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X\_1)}\SpecialCharTok{\%*\%}\NormalTok{Y}
+\NormalTok{BM}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         [,1]
+##   79.3272588
+## X -0.3243522
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# With R}
+\NormalTok{lmTemp }\OtherTok{=} \FunctionTok{lm}\NormalTok{(Y}\SpecialCharTok{\textasciitilde{}}\NormalTok{X)}
+\FunctionTok{summary}\NormalTok{(lmTemp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y ~ X)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.9816 -1.5386 -0.2949  1.8721  4.8236 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 79.32726    0.64797  122.42  < 2e-16 ***
+## X           -0.32435    0.02328  -13.94 2.22e-15 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.422 on 33 degrees of freedom
+## Multiple R-squared:  0.8548, Adjusted R-squared:  0.8504 
+## F-statistic: 194.2 on 1 and 33 DF,  p-value: 2.219e-15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{abline}\NormalTok{(lmTemp)  }\CommentTok{\# Draw the fit line}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analysis_files/figure-latex/unnamed-chunk-1-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\# Cross{-}validation OLS \#\#\#\#}
+\FunctionTok{library}\NormalTok{(bootstrap)}
+\CommentTok{\# The fit{-}function for crossval(), n is the degree of the model}
+\NormalTok{theta.fitn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{ (x,y,n)\{}
+\NormalTok{  a }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(x)}
+  \ControlFlowTok{if}\NormalTok{ (n}\SpecialCharTok{\textgreater{}}\DecValTok{1}\NormalTok{) \{}
+    \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{n) \{}
+\NormalTok{      a }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(a, }\FunctionTok{I}\NormalTok{(x}\SpecialCharTok{\^{}}\NormalTok{i))}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \FunctionTok{lsfit}\NormalTok{(a, y)}
+\NormalTok{\}}
+\CommentTok{\# The predict{-}function for crossval()}
+\NormalTok{theta.predictn}\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{ (fit,x)\{}
+\NormalTok{  a }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{, x)}
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{coef) }\SpecialCharTok{{-}} \DecValTok{1}
+  \ControlFlowTok{if}\NormalTok{ (n}\SpecialCharTok{\textgreater{}}\DecValTok{1}\NormalTok{) \{}
+    \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{n) \{}
+\NormalTok{      a }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(a, }\FunctionTok{I}\NormalTok{(x}\SpecialCharTok{\^{}}\NormalTok{i))}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{  a}\SpecialCharTok{\%*\%}\NormalTok{fit}\SpecialCharTok{$}\NormalTok{coef}
+\NormalTok{\}}
+
+\CommentTok{\# Go through models up to the 3rd degree}
+\NormalTok{deg }\OtherTok{\textless{}{-}} \DecValTok{3}
+\NormalTok{qs }\OtherTok{\textless{}{-}} \FunctionTok{vector}\NormalTok{(}\AttributeTok{length=}\NormalTok{deg)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{deg) \{}
+\NormalTok{  results}\OtherTok{\textless{}{-}}\FunctionTok{crossval}\NormalTok{(dataset.sample}\SpecialCharTok{$}\NormalTok{infant.mortality,}
+\NormalTok{                    dataset.sample}\SpecialCharTok{$}\NormalTok{life.expectancy, }
+\NormalTok{                    theta.fitn, theta.predictn, }\AttributeTok{n=}\NormalTok{i)}
+  \CommentTok{\# Mean of the loss{-}function}
+\NormalTok{  Q }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((dataset.sample}\SpecialCharTok{$}\NormalTok{life.expectancy}\SpecialCharTok{{-}}\NormalTok{results}\SpecialCharTok{$}\NormalTok{cv.fit)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{/}\DecValTok{52}
+\NormalTok{  qs[i] }\OtherTok{\textless{}{-}}\NormalTok{ Q}
+\NormalTok{\}}
+\CommentTok{\# Choose the degree with the smallest mean of the loss{-}function}
+\CommentTok{\# Degree}
+\FunctionTok{which.min}\NormalTok{(qs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Smallest Q}
+\NormalTok{qs}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.358701 4.141500 4.544503
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{qs[}\FunctionTok{which.min}\NormalTok{(qs)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.1415
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\# Hypothesis testing \#\#\#\#}
+\FunctionTok{set.seed}\NormalTok{(n)}
+\NormalTok{r.obt }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(X, Y)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"The obtained correlation is "}\NormalTok{, r.obt,}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The obtained correlation is  -0.9245287
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nreps }\OtherTok{\textless{}{-}} \FloatTok{1e4}
+\NormalTok{r.random }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(nreps)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nreps) \{}
+\NormalTok{  X.permute }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(X, }\FunctionTok{length}\NormalTok{(X), }\AttributeTok{replace=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  r.random[i] }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(X.permute, Y)}
+\NormalTok{\}}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{density}\NormalTok{(r.random),}
+     \AttributeTok{main =} \StringTok{"Distribution of correlation coefficient r"}\NormalTok{, }
+     \AttributeTok{xlab =} \StringTok{"r from randomized samples"}\NormalTok{,}
+     \AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{r.obt }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(r.obt, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\NormalTok{r.obt)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\SpecialCharTok{{-}}\NormalTok{r.obt)}
+\FunctionTok{legend}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, .}\DecValTok{2}\NormalTok{, r.obt, }\AttributeTok{bty =} \StringTok{"n"}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\FloatTok{0.66}\NormalTok{, .}\DecValTok{2}\NormalTok{, }\SpecialCharTok{{-}}\NormalTok{r.obt, }\AttributeTok{bty =} \StringTok{"n"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analysis_files/figure-latex/unnamed-chunk-1-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r.obt}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.92
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(r.random[}\SpecialCharTok{{-}}\NormalTok{r.obt }\SpecialCharTok{\textless{}=}\NormalTok{ r.random] }\SpecialCharTok{+}\NormalTok{ r.random[r.random }\SpecialCharTok{\textgreater{}=}\NormalTok{ r.obt])}\SpecialCharTok{/}\NormalTok{nreps}
+\NormalTok{prob}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\# Estimate correlation coefficients using Bootstrap and Jackknife method \#\#\#\#}
+\FunctionTok{set.seed}\NormalTok{(n)}
+\FunctionTok{library}\NormalTok{(bootstrap)}
+\FunctionTok{library}\NormalTok{(boot)}
+
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(X,Y)}
+\CommentTok{\# Jackknife}
+\NormalTok{theta1 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x,m)\{}
+  \FunctionTok{cor}\NormalTok{(m[x,}\DecValTok{1}\NormalTok{], m[x,}\DecValTok{2}\NormalTok{])}
+\NormalTok{\}}
+\NormalTok{l1 }\OtherTok{\textless{}{-}} \FunctionTok{jackknife}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n, theta1, data)}
+\CommentTok{\# Pseudo{-}values and the Jackknife{-}estimator}
+\NormalTok{bjack }\OtherTok{\textless{}{-}}\NormalTok{ n}\SpecialCharTok{*}\FunctionTok{cor}\NormalTok{(X,Y) }\SpecialCharTok{{-}}\NormalTok{ (n}\DecValTok{{-}1}\NormalTok{)}\SpecialCharTok{*}\NormalTok{l1}\SpecialCharTok{$}\NormalTok{jack.values }
+\NormalTok{theta.est }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(bjack) }\SpecialCharTok{/}\NormalTok{ n}
+\NormalTok{theta.est}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.9237229
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Confidence interval}
+\NormalTok{t.value }\OtherTok{\textless{}{-}} \FunctionTok{qt}\NormalTok{(}\FloatTok{0.975}\NormalTok{, n}\DecValTok{{-}1}\NormalTok{)}
+\NormalTok{dev }\OtherTok{\textless{}{-}}\NormalTok{ t.value}\SpecialCharTok{*}\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{var}\NormalTok{(bjack) }\SpecialCharTok{/}\NormalTok{ n)}
+\NormalTok{lower }\OtherTok{\textless{}{-}}\NormalTok{ theta.est }\SpecialCharTok{{-}}\NormalTok{ dev}
+\NormalTok{upper }\OtherTok{\textless{}{-}}\NormalTok{ theta.est }\SpecialCharTok{+}\NormalTok{ dev}
+\NormalTok{CI }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(lower, upper)}
+\NormalTok{CI}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.9700611 -0.8773847
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Bootstrap}
+\NormalTok{theta2 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(m,x) \{}
+  \FunctionTok{cor}\NormalTok{(m[x,}\DecValTok{1}\NormalTok{], m[x,}\DecValTok{2}\NormalTok{])}
+\NormalTok{\}}
+\NormalTok{l2 }\OtherTok{\textless{}{-}} \FunctionTok{boot}\NormalTok{(data, theta2, }\AttributeTok{R=}\DecValTok{1000}\NormalTok{)}
+\NormalTok{l2}\SpecialCharTok{$}\NormalTok{t0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.9245287
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{boot.ci}\NormalTok{(l2, }\AttributeTok{type =} \StringTok{"perc"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+## Based on 1000 bootstrap replicates
+## 
+## CALL : 
+## boot.ci(boot.out = l2, type = "perc")
+## 
+## Intervals : 
+## Level     Percentile     
+## 95%   (-0.9603, -0.8762 )  
+## Calculations and Intervals on Original Scale
+\end{verbatim}
+
+\end{document}

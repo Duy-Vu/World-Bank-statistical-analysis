@@ -1,6 +1,6 @@
 #### Data processing ####
 library(foreign)
-data_dir <- "vaestotieto.sav"
+data_dir <- "../data/vaestotieto.sav"
 path <- file.path(data_dir)
 dataset <- read.spss(path, to.data.frame=TRUE)
 
@@ -32,16 +32,10 @@ dataset.analysis <-na.omit(data.frame(countries,
                                       mortality,
                                       stringsAsFactors=FALSE))
 row.names(dataset.analysis) <- NULL
-
-# Summary
+write.csv(dataset.analysis, file="../output/data/clean_data.csv", row.names=FALSE)
 summary(dataset.analysis)
-#  countries         gdp.per.capita   healthcare.expense life.expectancy infant.mortality    mortality     
-# Length:174         Min.   :   293   Min.   : 2.270     Min.   :52.24   Min.   : 1.70   Min.   : 1.169  
-# Class :character   1st Qu.:  1862   1st Qu.: 4.466     1st Qu.:67.02   1st Qu.: 6.20   1st Qu.: 5.849  
-# Mode  :character   Median :  5413   Median : 6.421     Median :73.75   Median :14.40   Median : 7.236  
-#                    Mean   : 13570   Mean   : 6.510     Mean   :72.15   Mean   :22.04   Mean   : 7.700  
-#                    3rd Qu.: 15826   3rd Qu.: 8.135     3rd Qu.:77.57   3rd Qu.:34.27   3rd Qu.: 9.200  
-#                    Max.   :107627   Max.   :17.004     Max.   :84.10   Max.   :85.90   Max.   :15.500 
+
+
 
 #### Exploratory data analysis ####
 # Calculate correlation coefficients between all variables
@@ -58,26 +52,25 @@ plot(log(dataset.analysis$gdp.per.capita/1000),
 cor(dataset.analysis$life.expectancy, 
     dataset.analysis$gdp.per.capita, 
     method="spearman")
-# [1] 0.8631761
 
 plot(dataset.analysis$gdp.per.capita/1000,
      dataset.analysis$healthcare.expense,
      main="gdp/capita vs healthcare expense: 0.35")
 # Weak relationship
 
+# Strongest negative linear relationship
 plot(dataset.analysis$infant.mortality,
      dataset.analysis$life.expectancy,
-     xlab='Infant mortality (per 1,000 live births)',
-     ylab='Life expectancy')
-# Strongest negative linear relationship
-cor(dataset.analysis$infant.mortality,
-    dataset.analysis$life.expectancy)
+     main="infant mortality vs life expectancy: -0.93")
 
-##### Sampling ####
+
+
+#### Sampling ####
 n <- 35
 set.seed(n)
 random_id <- sample(1:174, n)
 dataset.sample <- dataset.analysis[random_id,]
+write.csv(dataset.sample, file="../output/data/sample_data.csv", row.names=FALSE)
 summary(dataset.sample)
 
 X <- dataset.sample$infant.mortality
@@ -92,7 +85,8 @@ plot(X, Y,
 # Without R
 X_1 <- cbind(1,X)
 BM<-solve(t(X_1)%*%X_1)%*%t(X_1)%*%Y
- 
+BM
+
 # With R
 lmTemp = lm(Y~X)
 summary(lmTemp)
@@ -124,9 +118,9 @@ theta.predictn<- function (fit,x){
 }
 
 # Go through models up to the 3rd degree
-n=3
-qs <- vector(length=n)
-for (i in 1:n) {
+deg <- 3
+qs <- vector(length=deg)
+for (i in 1:deg) {
   results<-crossval(dataset.sample$infant.mortality,
                     dataset.sample$life.expectancy, 
                     theta.fitn, theta.predictn, n=i)
@@ -137,11 +131,10 @@ for (i in 1:n) {
 # Choose the degree with the smallest mean of the loss-function
 # Degree
 which.min(qs)
-# [1] 3
 
 # Smallest Q
-qs[which.min(qs)]
 qs
+qs[which.min(qs)]
 
 
 
@@ -162,67 +155,45 @@ plot(density(r.random),
 r.obt <- round(r.obt, digits = 2)
 abline(v=r.obt)
 abline(v=-r.obt)
-legend(-1, .3, r.obt, bty = "n")
-legend(0.7, .3, -r.obt, bty = "n")
+legend(-1, .2, r.obt, bty = "n")
+legend(0.66, .2, -r.obt, bty = "n")
 r.obt
+
 prob <- sum(r.random[-r.obt <= r.random] + r.random[r.random >= r.obt])/nreps
 prob
 
 
 
-#### Estimate correlation coefficients using Bootstrap and Jackknife method ####  
-set.seed(1000)
-data <- cbind(X,y)
+#### Estimate correlation coefficients using Bootstrap and Jackknife method ####
+set.seed(n)
+library(bootstrap)
+library(boot)
+
+data <- cbind(X,Y)
 # Jackknife
 theta1 <- function(x,m){
-  cor(m[x,1],m[x,2])
+  cor(m[x,1], m[x,2])
 }
-l1 <- jackknife(1:10, theta1, data)
+l1 <- jackknife(1:n, theta1, data)
 # Pseudo-values and the Jackknife-estimator
-bjack<-10*cor(x,y)-9*l1$jack.values
-theta.est <- sum(bjack) / 10
+bjack <- n*cor(X,Y) - (n-1)*l1$jack.values 
+theta.est <- sum(bjack) / n
 theta.est
-## [1] 0.9272874
+
 # Confidence interval
-t.value <- qt(0.975, 9)
-dev <- t.value*sqrt(var(bjack) / 10)
+t.value <- qt(0.975, n-1)
+dev <- t.value*sqrt(var(bjack) / n)
 lower <- theta.est - dev
 upper <- theta.est + dev
 CI <- c(lower, upper)
 CI
-## [1] 0.8704885 0.9840864
-4# Bootstrap
+
+
+# Bootstrap
 theta2 <- function(m,x) {
   cor(m[x,1], m[x,2])
 }
 l2 <- boot(data, theta2, R=1000)
 l2$t0
-## [1] 0.9328462
+
 boot.ci(l2, type = "perc")
-
-
-
-#### 95% Confidence interval ####
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
